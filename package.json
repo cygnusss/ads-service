@@ -28,7 +28,6 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "json2csv": "^3.11.5",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.7",
     "random-word": "^2.0.0",
