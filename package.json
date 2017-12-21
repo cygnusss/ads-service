@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "nodemon ./server/index.js"
+    "start": "node ./server/index.js",
+    "start-dev": "nodemon ./server/index.js",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -25,9 +27,12 @@
     "redis": "^2.8.0"
   },
   "devDependencies": {
-    "axios": "^0.17.1",
+    "chai": "^4.1.2",
+    "json2csv": "^3.11.5",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.7",
-    "random-word": "^2.0.0"
+    "random-word": "^2.0.0",
+    "request": "^2.83.0",
+    "supertest": "^3.0.0"
   }
 }
