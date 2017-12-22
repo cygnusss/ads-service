@@ -3,11 +3,12 @@ const port = process.env.PORT || 3000
 const bodyParser = require('body-parser')
 const app = express()
 const cassandra = require('cassandra-driver')
-// const client = require('../database_redis/index')
-// const tester = require('../database_cassandra/tester')
-const client = require('../database_cassandra/index')
 
-app.use(bodyParser());
+// const redisClient = require('../database_redis/index')
+// const tester = require('../database_cassandra/tester')
+const cassandraClient = require('../database_cassandra/index')
+
+app.use(bodyParser()
 
 app.get('/', (req, resp) => {
   // TO BE CONTINUETDED
@@ -26,8 +27,8 @@ app.post('/ads', (req, resp) => {
   const category = req.body.category
 
   const insertUsers = 'INSERT INTO test.users(id, img, siteLink, category) VALUES(?, ?, ?, ?)'
-  client.execute(insertUsers, [id, img, siteLink, category], (err, result) => {
-    if (err) console.error(err);
+  cassandraClient.execute(insertUsers, [id, img, siteLink, category], (err, result) => {
+    if (err) console.error(err)
     else {
       resp
         .status(202)
@@ -37,6 +38,23 @@ app.post('/ads', (req, resp) => {
 })
 
 app.post('/events', (req, resp) => {
+  /*
+    {
+      "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+      "categories": [{
+        "category": "Comedy",
+        "count": 4
+      }, {
+        "category": "Drama",
+        "count": 7
+      }]
+    }
+  */
+  const preferences = req.categories
+
+  for (const pref of preferences) {
+    cassandraClient.execute(`SELECT * FROM test.users WHERE category = '${pref.category}'`);
+  }
 })
 
 if(!module.parent){ 
