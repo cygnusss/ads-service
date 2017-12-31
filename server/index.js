@@ -3,12 +3,10 @@ const port = process.env.PORT || 3000
 const bodyParser = require('body-parser')
 const app = express()
 const cassandra = require('cassandra-driver')
+const { redis, redisClient } = require('../database_redis/index')
+const { cassandraClient, insertAds, findAds } = require('./database_cassandra/index')
 
-// const redisClient = require('../database_redis/index')
-// const tester = require('../database_cassandra/tester')
-const cassandraClient = require('../database_cassandra/index')
-
-app.use(bodyParser()
+app.use(bodyParser())
 
 app.get('/', (req, resp) => {
   // TO BE CONTINUETDED
@@ -26,15 +24,16 @@ app.post('/ads', (req, resp) => {
   const siteLink = req.body.siteLink
   const category = req.body.category
 
-  const insertUsers = 'INSERT INTO test.users(id, img, siteLink, category) VALUES(?, ?, ?, ?)'
-  cassandraClient.execute(insertUsers, [id, img, siteLink, category], (err, result) => {
-    if (err) console.error(err)
-    else {
+
+  insertAds(id, img, siteLink, category)
+    .then((result) => {
       resp
         .status(202)
         .end()
-    }
-  })
+    })
+    .catch(err => {
+      throw err
+    })
 })
 
 app.post('/events', (req, resp) => {
@@ -50,14 +49,37 @@ app.post('/events', (req, resp) => {
       }]
     }
   */
-  const preferences = req.categories
+  const preferences = req.body.categories.length > 3 
+                      ? req.body.categories
+                          .sort((a, b) => {
+                            return a.count - b.count
+                          })
+                          .slice(0, 3)
+                      : req.body.categories
+  
+  const channelId = req.body.channelId
 
-  for (const pref of preferences) {
-    cassandraClient.execute(`SELECT * FROM test.users WHERE category = '${pref.category}'`);
+  const findAds = async () => {
+    let responseAds = []
+    for (const pref of preferences) {
+      const category = pref.category
+      await findAds(category)
+        .then(response => {
+          const ads = response.rows
+          const randomIndex = (Math.random() * ads.length) >>> 0
+
+          responseAds.push(ads[randomIndex])
+        })
+    }
+    return responseAds
   }
+  findAds()
+    .then(responseAds => {
+      redisClient.set(channelId, JSON.stringify(responseAds), redis.print)
+    })
 })
 
-if(!module.parent){ 
+if (!module.parent){ 
   app.listen(port, _ => console.log('on 3000'))
 }
 module.exports = app

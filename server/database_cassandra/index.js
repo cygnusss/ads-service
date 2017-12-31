@@ -1,15 +1,59 @@
 const Promise = require('bluebird')
 const fs = require('fs')
 const cassandra = require('cassandra-driver')
-const getFakeAd = require('../faker/script')
-const json2csv = require('json2csv')
+// const getFakeAd = require('../faker/script')
+// const json2csv = require('json2csv')
 
-const client = new cassandra.Client({
-  contactPoints: ['127.0.0.1']
+const cassandraClient = new cassandra.Client({
+  contactPoints: ['127.0.0.1'],
+  promiseFactory: Promise.fromCallback
 })
-client.connect()
+
+cassandraClient.connect()
   .then(_ => console.log('connected to cassandra'))
   .catch(err => console.error('timeout bruh'))
+
+const insertAds = (id, img, siteLink, category) => {
+  const insertionQuery = 'INSERT INTO test.users(id, img, siteLink, category) VALUES(?, ?, ?, ?)'
+  
+  return cassandraClient.execute(insertionQuery, [ id, img, siteLink, category ])
+}
+
+const findAds = (category) => {
+  const insertionQuery = `SELECT * FROM test.users WHERE category='${pref.category}' ALLOW FILTERING;`;
+
+  return cassandraClient.execute(insertionQuery)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* COUNT ROWS */
@@ -28,7 +72,7 @@ client.connect()
 //     const fields = [id, category, img, siteLink]
 //     const file = json2csv({fields}) + '\n'
     
-//     fs.appendFile('test_TEN.csv', file, err => {
+//     fs.appendFile('test_ONE.csv', file, err => {
 //       if (err) throw err
 //       console.log('The file has been saved!')
 //     })
@@ -61,4 +105,6 @@ client.connect()
 //   }
 // })
 
-module.exports = client
+module.exports.cassandraClient = cassandraClient
+module.exports.insertAds = insertAds
+module.exports.findAds = findAds
