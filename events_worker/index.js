@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk'
 import Promise from 'bluebird'
 import Consumer from 'sqs-consumer'
+import redis from 'redis'
 import { redisClient } from '../database_redis/index'
 import { cassandraClient, insertAds, findAds } from '../database_cassandra/index'
 import { region, accessKeyId, secretAccessKey, QueueUrl } from '../aws.config'
@@ -36,26 +37,41 @@ export const app = Consumer.create({
     const channelId = body.channelId
     let preferences = body.categories
 
-    if (req.body.categories.length > 3) {
+    if (preferences.length > 3) {
       preferences = preferences.sort((a, b) => a.count - b.count).slice(0, 3)
     }
-
-    findAds()
+    
+    findAdsFromDB(preferences)
       .then(responseAds => {
-        redisClient.set(channelId, JSON.stringify(responseAds), redis.print)
-      })
+          redisClient.set(channelId, JSON.stringify(responseAds), redis.print)
+          done()
+        })
 
-    done()
   }
 })
 
 app.on('error', err => console.error(err))
 app.start()
 
-sqs.sendMessage = Promise.promisify(sqs.sendMessage)
-
 export const sendMessage = (body) => {
   const MessageBody = JSON.stringify(body)
 
   return sqs.sendMessage({ QueueUrl, MessageBody })
 }
+
+
+
+// sendMessage({
+//     "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+//     "categories": [{
+//       "category": "Comedy",
+//       "count": 4
+//     }, {
+//       "category": "Drama",
+//       "count": 7
+//     }]
+//   })
+//   .then(m => {
+//     console.log('message sent')
+//     console.log(m)
+//   })

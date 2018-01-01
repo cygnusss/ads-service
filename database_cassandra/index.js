@@ -1,8 +1,8 @@
-const Promise = require('bluebird')
-const fs = require('fs')
-const cassandra = require('cassandra-driver')
-// const getFakeAd = require('../faker/script')
-// const json2csv = require('json2csv')
+import Promise from 'bluebird'
+import fs from 'fs'
+import cassandra from 'cassandra-driver'
+const getFakeAd = require('../faker/script')
+const json2csv = require('json2csv')
 
 export const cassandraClient = new cassandra.Client({
   contactPoints: ['127.0.0.1'],
@@ -20,7 +20,7 @@ export const insertAds = (id, img, siteLink, category) => {
 }
 
 export const findAds = (category) => {
-  const insertionQuery = `SELECT * FROM test.users WHERE category='${pref.category}' ALLOW FILTERING;`;
+  const insertionQuery = `SELECT * FROM test.users WHERE category='${category}' ALLOW FILTERING;`;
 
   return cassandraClient.execute(insertionQuery)
 }
@@ -62,9 +62,9 @@ export const findAds = (category) => {
 //   .catch(err => console.error('timeout bruh'))
 
 /* SCRIPT GENERATING FAKE USERS AND WRITING THEM INTO A CSV FILE */
-// const addTenFiveThousand = () => {
+// const addFiveThousand = () => {
 //   let i = 0; do {
-//     id = cassandra.types.uuid()
+//     const id = cassandra.types.uuid()
 //     const fakeAd = getFakeAd()
 //     const category = fakeAd.category
 //     const img = fakeAd.img
@@ -81,10 +81,12 @@ export const findAds = (category) => {
 //   } while (i <= 5000)
 // }
 
+
+// addFiveThousand()
 // let i = 0; setInterval(function() {
 //   if (i <= 180) {
 //     console.log('Insertion number:', i)
-//     addTenFiveThousand()
+//     addFiveThousand()
 //   } 
 //   else { console.log('1,000,000 records loaded') }
 //   i++
