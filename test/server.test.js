@@ -1,5 +1,5 @@
-const request = require('supertest')
-const app = require('../server')
+import request from 'supertest'
+import app from '../server'
 
 describe('Server', () => {
   it('Should respond with 200 on the "/" route', (done) => {

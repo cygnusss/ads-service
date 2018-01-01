@@ -1,15 +1,9 @@
-const redis = require('redis')
-const Promise = require('bluebird')
+import redis from 'redis'
+import Promise from 'bluebird'
 
-const redisClient = redis.createClient()
+export const redisClient = redis.createClient()
 
-// Promise.promisifyAll(redis.RedisClient.prototype)
-// Promise.promisifyAll(redis.Multi.prototype)
+Promise.promisifyAll(redis.RedisClient.prototype)
 
-redisClient.on('connect', _ => {
-  console.log('connected to redis')
-})
+redisClient.on('connect', () => console.log('connected to redis'))
 redisClient.on('error', err => console.error(err))
-
-module.exports.redisClient = redisClient
-module.exports.redis = redis
