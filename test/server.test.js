@@ -130,11 +130,12 @@ describe('Redis', () => {
       .catch(err => done(err))
   })
 
-  it('The value of a key should be an array', (done) => {
+  it('The value of a key should be an array with items', (done) => {
     redisClient.getAsync(channelId)
       .then((resp) => {
         resp = JSON.parse(resp)
         expect(resp).to.be.an('array')
+        expect(resp.length).to.not.equal(0)
         done()
       })
       .catch(err => done(err))
