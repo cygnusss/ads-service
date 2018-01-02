@@ -97,7 +97,35 @@ describe('Cassandra', () => {
 })
 
 describe('Redis', () => {
+  const channelId = '1629bb06aa204e6c'
+  const ads = [ 
+    { id: '747be100-d602-4baa-af78-fff3277e96c7',
+      category: 'Comedy',
+      img: 'http://www.clinical.ir/oHoSz6/nonpersonal.png',
+      sitelink: 'http://www.examinable.kr' },
+    { id: '34b2946e-36fd-4ed3-8e82-c9a3ff7ea250',
+      category: 'Drama',
+      img: 'http://www.subcolleges.gr/I3rbrLhM/clingingness.png',
+      sitelink: 'http://www.temporalness.ps' } 
+  ]
+  
   before((done) => {
-    redisClient.
+    redisClient.setAsync(channelId, JSON.stringify(ads))
+      .then(() => done())
+      .catch(err => done(err))
+  })
+
+  after((done) => {
+    redisClient.delAsync(channelId)
+      .then(() => done())
+      .catch(err => done(err))
+  })
+
+  it('Should properly set key:values when inserted', (done) => {
+    redisClient.getAsync(channelId)
+      .then((resp) => {
+        expect(resp).to.exist
+        done()
+      })
   })
 })
