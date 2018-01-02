@@ -14,50 +14,31 @@ cassandraClient.connect()
   .catch(err => console.error('timeout bruh'))
 
 export const insertAds = (id, img, siteLink, category) => {
-  const insertionQuery = 'INSERT INTO test.users(id, img, siteLink, category) VALUES(?, ?, ?, ?)'
-  
+  const insertionQuery = 'INSERT INTO ads_service.ads(id, img, siteLink, category) VALUES(?, ?, ?, ?)'
+
   return cassandraClient.execute(insertionQuery, [ id, img, siteLink, category ])
 }
 
 export const findAds = (category) => {
-  const insertionQuery = `SELECT * FROM test.users WHERE category='${category}' ALLOW FILTERING;`;
+  const insertionQuery = `SELECT * FROM ads_service.ads WHERE category='${category}' ALLOW FILTERING`
 
   return cassandraClient.execute(insertionQuery)
 }
 
+export const findAdsById = (id) => {
+  const insertionQuery = `SELECT * FROM ads_service.ads WHERE id='${id}' ALLOW FILTERING`
 
+  return cassandraClient.execute(insertionQuery)
+}
 
+export const deleteAd = (id) => {
+  const deletionQuery = `DELETE FROM ads_service.ads WHERE id = '${id}'`
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  return cassandraClient.execute(deletionQuery)
+}
 
 /* COUNT ROWS */
-// client.execute('SELECT COUNT(*) FROM test.users')
+// client.execute('SELECT COUNT(*) FROM ads_service.ads')
 //   .then(res => console.log(res))
 //   .catch(err => console.error('timeout bruh'))
 
@@ -70,8 +51,8 @@ export const findAds = (category) => {
 //     const img = fakeAd.img
 //     const siteLink = fakeAd.siteLink
 //     const fields = [id, category, img, siteLink]
-//     const file = json2csv({fields}) + '\n'
-    
+//     const file = json2csv({ fields }) + '\n'
+
 //     fs.appendFile('test_ONE.csv', file, err => {
 //       if (err) throw err
 //       console.log('The file has been saved!')
@@ -93,16 +74,19 @@ export const findAds = (category) => {
 // }, 1000)
 
 /* WRITE DIRECTLY INTO THE DB */
-// const insertUsers = 'INSERT INTO test.users(id, img, siteLink, category) VALUES(?, ?, ?, ?)'
-// client.execute(insertUsers, [id, img, siteLink, category], (err, res) => {
-//   if (err) throw err
-//   else {
-//     console.log('User Added')
-//     console.log({
-//       id,
-//       img,
-//       siteLink,
-//       category
-//     })
-//   }
-// })
+// export const insertAds = (id, img, siteLink, category) => {
+//   console.log('running cassandra method')
+//   const insertUsers = 'INSERT INTO ads_service.ads(id, img, siteLink, category) VALUES(?, ?, ?, ?)'
+//   cassandraClient.execute(insertUsers, [id, img, siteLink, category], (err, res) => {
+//     if (err) throw err
+//     else {
+//       console.log('User Added')
+//       console.log({
+//         id,
+//         img,
+//         siteLink,
+//         category
+//       })
+//     }
+//   })
+// }

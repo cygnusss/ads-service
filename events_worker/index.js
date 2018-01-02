@@ -4,7 +4,7 @@ import Consumer from 'sqs-consumer'
 import redis from 'redis'
 import { redisClient } from '../database_redis/index'
 import { cassandraClient, insertAds, findAds } from '../database_cassandra/index'
-import { region, accessKeyId, secretAccessKey, QueueUrl } from '../aws.config'
+import { region, accessKeyId, secretAccessKey, QueueUrl } from '../eventSQS.config'
 
 AWS.config.update({ region, accessKeyId, secretAccessKey })
 

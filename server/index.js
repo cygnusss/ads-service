@@ -5,7 +5,7 @@ import { redis, redisClient } from '../database_redis/index'
 import { cassandraClient, insertAds, findAds } from '../database_cassandra/index'
 
 const port = process.env.PORT || 3000
-const app = express()
+export const app = express()
 
 app.use(bodyParser())
 
@@ -38,5 +38,3 @@ app.post('/ads', (req, resp) => {
 if (!module.parent){ 
   app.listen(port, _ => console.log('on 3000'))
 }
-
-export default app
