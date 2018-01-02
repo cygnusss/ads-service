@@ -127,5 +127,16 @@ describe('Redis', () => {
         expect(resp).to.exist
         done()
       })
+      .catch(err => done(err))
+  })
+
+  it('The value of a key should be an array', (done) => {
+    redisClient.getAsync(channelId)
+      .then((resp) => {
+        resp = JSON.parse(resp)
+        expect(resp).to.be.an('array')
+        done()
+      })
+      .catch(err => done(err))
   })
 })
