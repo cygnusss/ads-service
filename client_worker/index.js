@@ -4,4 +4,3 @@ import Consumer from 'sqs-consumer'
 import { region, accessKeyId, secretAccessKey, QueueUrl } from '../clientSQS.config'
 
 AWS.config.update({ region, accessKeyId, secretAccessKey })
-
