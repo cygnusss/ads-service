@@ -140,4 +140,16 @@ describe('Redis', () => {
       })
       .catch(err => done(err))
   })
+
+  it('The response objects should have an id property', (done) => {
+    redisClient.getAsync(channelId)
+      .then((resp) => {
+        resp = JSON.parse(resp)
+        const i = resp.length - 1
+        const ad = resp[i]
+        expect(ad.id).to.exist
+        done()
+      })
+      .catch(err => done(err))
+  })
 })
