@@ -176,4 +176,16 @@ describe('Redis', () => {
       })
       .catch(err => done(err))
   })
+
+  it('The response objects should have a sitelink property', (done) => {
+    redisClient.getAsync(channelId)
+      .then((resp) => {
+        resp = JSON.parse(resp)
+        const i = resp.length - 1
+        const ad = resp[i]
+        expect(ad.sitelink).to.exist
+        done()
+      })
+      .catch(err => done(err))
+  })
 })
