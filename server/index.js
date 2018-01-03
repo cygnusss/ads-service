@@ -25,7 +25,6 @@ app.post('/ads', (req, resp) => {
   const siteLink = req.body.siteLink
   const category = req.body.category
 
-
   insertAds(id, img, siteLink, category)
     .then((result) => {
       resp.status(202).end()
