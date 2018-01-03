@@ -1,4 +1,7 @@
+.DS_Store
 .dockerignore
+.env
+node_modules/
 Dockerfile
 docker-compose.yml
 clientSQS.config.js
