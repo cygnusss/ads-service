@@ -1,4 +1,5 @@
 .dockerignore
 Dockerfile
 docker-compose.yml
-aws.config.js
+clientSQS.config.js
+eventSQS.config.js

@@ -1,8 +1,8 @@
 import Promise from 'bluebird'
 import fs from 'fs'
 import cassandra from 'cassandra-driver'
-const getFakeAd = require('../faker/script')
-const json2csv = require('json2csv')
+// const getFakeAd = require('../faker/script')
+// const json2csv = require('json2csv')
 
 export const cassandraClient = new cassandra.Client({
   contactPoints: ['127.0.0.1'],

@@ -46,7 +46,6 @@ export const app = Consumer.create({
           redisClient.set(channelId, JSON.stringify(responseAds), redis.print)
           done()
         })
-
   }
 })
 
@@ -58,20 +57,3 @@ export const sendMessage = (body) => {
 
   return sqs.sendMessage({ QueueUrl, MessageBody })
 }
-
-
-
-// sendMessage({
-//     "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
-//     "categories": [{
-//       "category": "Comedy",
-//       "count": 4
-//     }, {
-//       "category": "Drama",
-//       "count": 7
-//     }]
-//   })
-//   .then(m => {
-//     console.log('message sent')
-//     console.log(m)
-//   })
