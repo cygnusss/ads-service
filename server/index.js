@@ -1,3 +1,5 @@
+require('newrelic')
+import shortid from 'shortid'
 import express from 'express'
 import bodyParser from 'body-parser'
 import cassandra from 'cassandra-driver'
@@ -20,18 +22,16 @@ app.get('/ads', (req, resp) => {
 })
 
 app.post('/ads', (req, resp) => {
-  const id = cassandra.types.uuid()
+  const id = shortid.generate()
   const img = req.body.img
   const siteLink = req.body.siteLink
   const category = req.body.category
 
   insertAds(id, img, siteLink, category)
-    .then((result) => {
-      resp.status(202).end()
+    .then((success) => {
+      resp.status(201).end()
     })
-    .catch(err => {
-      throw err
-    })
+    .catch((err) => console.error(err))
 })
 
 if (!module.parent){ 

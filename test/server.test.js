@@ -29,7 +29,7 @@ describe('Server', () => {
 })
 
 describe('Cassandra', () => {
-  const insertionQuery = 'INSERT INTO test.users(id, img, siteLink, category) VALUES(?, ?, ?, ?)'
+  const insertionQuery = 'INSERT INTO ads_service.ads(id, img, siteLink, category) VALUES(?, ?, ?, ?)'
 
   const id = '1629bb06aa204e6c'
   const img = 'https://giphy.com/SJusjAu78'
