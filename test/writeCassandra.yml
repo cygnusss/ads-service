@@ -2,7 +2,7 @@ config:
   target: "http://127.0.0.1:3000"
   phases:
     - duration: 5
-      arrivalRate: 2000
+      arrivalRate: 5000
 scenarios:
   - flow:
     - log: "New virtual user running"

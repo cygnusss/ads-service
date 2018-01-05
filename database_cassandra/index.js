@@ -11,7 +11,7 @@ export const cassandraClient = new cassandra.Client({
 
 cassandraClient.connect()
   .then(() => console.log('connected to cassandra'))
-  .catch(err => console.error('timeout bruh'))
+  .catch(err => console.error(err))
 
 export const insertAds = (id, img, siteLink, category) => {
   const insertionQuery = 'INSERT INTO ads_service.ads(id, img, siteLink, category) VALUES(?, ?, ?, ?)'
