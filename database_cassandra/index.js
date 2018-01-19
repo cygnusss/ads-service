@@ -5,13 +5,13 @@ import cassandra from 'cassandra-driver'
 // const json2csv = require('json2csv')
 
 export const cassandraClient = new cassandra.Client({
-  contactPoints: ['127.0.0.1'],
+  contactPoints: ['172.31.11.134'],
   promiseFactory: Promise.fromCallback
 })
 
 cassandraClient.connect()
   .then(() => console.log('connected to cassandra'))
-  .catch(err => console.error(err))
+  .catch(err => console.error('ERROR IN CASSANDRA', err, 'ERROR IN CASSANDRA'))
 
 export const insertAds = (id, img, siteLink, category) => {
   const insertionQuery = 'INSERT INTO ads_service.ads(id, img, siteLink, category) VALUES(?, ?, ?, ?)'
