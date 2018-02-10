@@ -11,11 +11,6 @@ export const app = express()
 
 app.use(bodyParser())
 
-app.get('/', (req, resp) => {
-  // TO BE CONTINUETDED
-  resp.status(200).end('HAHA')
-})
-
 app.get('/ads', (req, resp) => {
   // TO BE CONTINUETDED
   resp.status(200).end('HAHA')
